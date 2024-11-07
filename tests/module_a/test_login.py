@@ -1,6 +1,7 @@
 import pytest
 import allure
 from constants.severity import Severity
+from utils.logger import Logger
 from utils.timeUtil import TimeUtil
 
 
@@ -35,6 +36,7 @@ class TestLogin:
     @allure.testcase("https://www.baidu.com")
     # @pytest.mark.skip
     def test_login_right_username_wrong_password(self):
+        Logger.info("Test 1234")
         with allure.step("调用接口进行测试"):
             TimeUtil.sleep(2)
             assert 1 != 2

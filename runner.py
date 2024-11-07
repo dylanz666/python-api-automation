@@ -46,13 +46,13 @@ class Runner(object):
 
     def run(self, fast_fail=False, matcher="", cases="", concurrency=1, mark=""):
         args = ["-v", "-s", '--alluredir', "./allure-results"]
-        if fast_fail == True:
+        if fast_fail:
             args.append("-x")
         if matcher:
             args.append("-k")
             args.append(matcher)
         if cases:
-            if type(cases) == tuple:
+            if cases is tuple:
                 args += cases
             else:
                 args += cases.split(",")
