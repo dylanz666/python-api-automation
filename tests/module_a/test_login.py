@@ -2,7 +2,7 @@ import pytest
 import allure
 from constants.severity import Severity
 from utils.logger import Logger
-from utils.timeUtil import TimeUtil
+from utils.time_util import TimeUtil
 
 
 @allure.feature("登录功能")

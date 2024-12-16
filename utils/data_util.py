@@ -1,7 +1,7 @@
 import os
 import json
 import jsonpath
-from utils.configUtil import ConfigUtil
+from utils.config_util import ConfigUtil
 
 
 class DataUtil:

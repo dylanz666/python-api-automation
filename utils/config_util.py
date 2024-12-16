@@ -2,6 +2,7 @@ import os
 import configparser
 from pr_properties.properties import Properties
 
+
 class ConfigUtil:
     root_path = os.getcwd()
     config = configparser.ConfigParser()
