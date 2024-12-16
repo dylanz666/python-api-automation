@@ -1,6 +1,6 @@
 import requests
 
-from decorator.retryDecorator import request_retry
+from decorator.retry_decorator import request_retry
 
 
 class RequestUtil:

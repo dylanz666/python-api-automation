@@ -45,7 +45,7 @@ def retry(**kw):
     return decorator
 
 
-class retryTest:
+class RetryTest:
     @classmethod
     @retry(expected_status_code=0, attempt=3)
     def test(cls, data):
@@ -54,4 +54,4 @@ class retryTest:
 
 
 if __name__ == "__main__":
-    rer = retryTest.test(123)
+    rer = RetryTest.test(123)

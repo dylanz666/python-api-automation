@@ -20,7 +20,7 @@ class TestLogin:
         print("\n方法级别的钩子，类似 afterEach")
 
     @pytest.mark.P0
-    @allure.severity(Severity.BLOKER.value)
+    @allure.severity(Severity.BLOCKER.value)
     @allure.title("登录测试-正确的用户名密码")
     @allure.description("登录测试-正确用户名+正确密码")
     @allure.testcase("https://www.baidu.com")

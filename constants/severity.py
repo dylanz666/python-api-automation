@@ -4,7 +4,7 @@ from enum import Enum, unique
 @unique
 class Severity(Enum):
     # 阻塞缺陷（功能未实现，无法下一步）
-    BLOKER = "blocker"
+    BLOCKER = "blocker"
     # 严重缺陷（功能点缺失）
     CRITICAL = "critical"
     # 一般缺陷（边界情况，格式错误）
