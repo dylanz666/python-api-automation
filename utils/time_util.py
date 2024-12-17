@@ -21,10 +21,6 @@ class TimeUtil:
         formater = formater if formater else cls.default_formater
         return time.strftime(formater, time.localtime())
 
-    @staticmethod
-    def sleep(seconds):
-        time.sleep(seconds)
-
 
 if __name__ == "__main__":
     TimeUtil.get_current_time()

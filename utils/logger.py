@@ -1,72 +1,93 @@
-import time
 import os
 import logging
-from enum import Enum, unique
+from collections import defaultdict
+from datetime import datetime
+from utils.file_util import FileUtil
 
-
-@unique
-class LogType(Enum):
-    INFO = "INFO"
-    WARN = "WARN"
-    ERROR = "ERROR"
-    DEBUG = "DEBUG"
-    CRITICAL = "CRITICAL"
+log_path = os.path.join(os.getcwd(), 'logs')
 
 
 class Logger:
-    if not os.path.exists(os.getcwd() + '/log'):
-        os.mkdir(os.getcwd() + '/log')
+    loggers = defaultdict(logging.getLogger)
 
-    log_filename = os.path.join(
-        os.getcwd(), f"log/{time.strftime('%Y-%m-%d', time.localtime())}.log")
-    logger = logging.getLogger()
+    @classmethod
+    def initialize(cls):
+        FileUtil.makedirs_if_not_exist(log_path)
+        now = datetime.now()
+        date_str = f"{now.year}-{now.month:02d}-{now.day:02d}"
+        cls.log_filename = os.path.join(log_path, f"{date_str}.log")
 
-    def __int__(self):
-        pass
+        # Check if the corresponding logger already exists
+        if cls.loggers.get(date_str) is not None:
+            return
 
+        # Define a logger container
+        logger = logging.getLogger(date_str)
+        logger.setLevel(logging.DEBUG)
+        cls.loggers[date_str] = logger
+
+        # Create the log input format
+        cls.formatter = logging.Formatter(
+            '[%(asctime)s][%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+
+        # Create a file handler to store log files
+        cls.filelogger = logging.FileHandler(cls.log_filename, mode='a', encoding='utf-8')
+        cls.console = logging.StreamHandler()
+
+        # Set the log level for console and file
+        cls.console.setLevel(logging.DEBUG)
+        cls.filelogger.setLevel(logging.DEBUG)
+
+        # Set the log format
+        cls.filelogger.setFormatter(cls.formatter)
+        cls.console.setFormatter(cls.formatter)
+        logger.addHandler(cls.filelogger)
+        logger.addHandler(cls.console)
+
+        cls.loggers[date_str] = logger
+
+    @staticmethod
+    def get_logger():
+        now = datetime.now()
+        date_str = f"{now.year}-{now.month:02d}-{now.day:02d}"
+        return Logger.loggers[date_str]
+
+    @staticmethod
     def format_log_info(*info):
-        info_list = []
-        for info_item in info:
-            info_list.append(info_item)
-        return ' '.join(info_list)
-
-    def set_basic_logging_config(log_type) -> None:
-        logging.basicConfig(filename=Logger.log_filename, level=logging.DEBUG,
-                            format=f'%(asctime)s [{log_type.value}] %(message)s', datefmt='[%Y-%m-%d %H:%M:%S]')
-
-    def print_log(log_type, log_info) -> None:
-        print(time.strftime("[%Y-%m-%d %H:%M:%S]",
-              time.localtime()), f"[{log_type.value}]", log_info)
-
-    def print_and_log(log_type, *info) -> None:
-        Logger.set_basic_logging_config(log_type)
-
-        log_info = Logger.format_log_info(*info)
-
-        Logger.print_log(log_type, log_info)
-
-        Logger.logger.info(log_info)
+        return ' '.join(str(info_item) for info_item in info)
 
     @classmethod
     def info(cls, *info) -> None:
-        cls.print_and_log(LogType.INFO, *info)
+        log_info = cls.format_log_info(*info)
+        Logger.get_logger().info(log_info)
 
     @classmethod
-    def warn(cls, *info) -> None:
-        cls.print_and_log(LogType.WARN, *info)
+    def warning(cls, *info) -> None:
+        log_info = cls.format_log_info(*info)
+        Logger.get_logger().warning(log_info)
 
     @classmethod
     def error(cls, *info) -> None:
-        cls.print_and_log(LogType.ERROR, *info)
+        log_info = cls.format_log_info(*info)
+        Logger.get_logger().error(log_info)
 
     @classmethod
     def debug(cls, *info) -> None:
-        cls.print_and_log(LogType.DEBUG, *info)
+        log_info = cls.format_log_info(*info)
+        Logger.get_logger().debug(log_info)
 
     @classmethod
     def critical(cls, *info) -> None:
-        cls.print_and_log(LogType.CRITICAL, *info)
+        log_info = cls.format_log_info(*info)
+        Logger.get_logger().critical(log_info)
 
+
+# Initialize Logger
+Logger.initialize()
 
 if __name__ == "__main__":
-    Logger.info("dylan, test", "some other log...")
+    Logger.info("this is an info log", 123)
+    Logger.debug("this is a debug log", 123)
+    Logger.error("this is an error log", 123)
+    Logger.critical("this is a critical log", 123)
+    Logger.warning("this is a warn log", 123)

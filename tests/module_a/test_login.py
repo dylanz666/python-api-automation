@@ -1,23 +1,28 @@
+import time
+
 import pytest
 import allure
 from constants.severity import Severity
 from utils.logger import Logger
-from utils.time_util import TimeUtil
 
 
 @allure.feature("登录功能")
 class TestLogin:
     def setup_class(self):
-        print("\n类级别的钩子，类似 before")
+        # 类级别的钩子，类似 before
+        pass
 
     def teardown_class(self):
-        print("\n类级别的钩子，类似 after")
+        # 类级别的钩子，类似 after
+        pass
 
     def setup_method(self):
-        print("\n方法级别的钩子，类似 beforeEach")
+        # 方法级别的钩子，类似 beforeEach
+        pass
 
     def teardown_method(self):
-        print("\n方法级别的钩子，类似 afterEach")
+        # 方法级别的钩子，类似 afterEach
+        pass
 
     @pytest.mark.P0
     @allure.severity(Severity.BLOCKER.value)
@@ -26,7 +31,7 @@ class TestLogin:
     @allure.testcase("https://www.baidu.com")
     def test_login_positive(self):
         with allure.step("调用接口进行测试"):
-            TimeUtil.sleep(2)
+            time.sleep(2)
             assert 1 == 1
 
     @pytest.mark.P1
@@ -38,7 +43,7 @@ class TestLogin:
     def test_login_right_username_wrong_password(self):
         Logger.info("Test 1234")
         with allure.step("调用接口进行测试"):
-            TimeUtil.sleep(2)
+            time.sleep(2)
             assert 1 != 2
 
     @pytest.mark.P1
@@ -49,7 +54,7 @@ class TestLogin:
     # @pytest.mark.skip
     def test_login_wrong_username_wrong_password(self):
         with allure.step("调用接口进行测试"):
-            TimeUtil.sleep(2)
+            time.sleep(2)
             assert 1 != 3
 
     @pytest.mark.P1
@@ -60,5 +65,5 @@ class TestLogin:
     # @pytest.mark.skip
     def test_login_wrong_username_right_password(self):
         with allure.step("调用接口进行测试"):
-            TimeUtil.sleep(2)
+            time.sleep(2)
             assert 1 != 4
