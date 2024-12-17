@@ -1,6 +1,7 @@
 import os
 import configparser
-from pr_properties.properties import Properties
+
+from pr_properties import pr_properties
 
 
 class ConfigUtil:
@@ -12,10 +13,15 @@ class ConfigUtil:
 
     @classmethod
     def get_env(cls):
-        properties = Properties()
         config_path = os.path.join(cls.root_path, "environment.properties")
-        properties.read(path=config_path)
-        return properties['env']
+        p = pr_properties.read(file_path=config_path)
+        return p["env"]
+
+    @classmethod
+    def get_base_url(cls):
+        config_path = os.path.join(cls.root_path, "environment.properties")
+        p = pr_properties.read(file_path=config_path)
+        return p["base_url"]
 
     @classmethod
     def get_config(cls, section, config_name):
@@ -38,4 +44,5 @@ class ConfigUtil:
 
 
 if __name__ == "__main__":
-    pass
+    print(ConfigUtil.get_env())
+    print(ConfigUtil.get_base_url())
